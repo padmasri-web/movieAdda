@@ -10,10 +10,18 @@
 
 ---
 
+## 🔐 Security Notice
+
+> **IMPORTANT:** This application requires a **Google Gemini API Key** (`GEMINI_API_KEY`) to generate AI summaries and a **MongoDB Connection String** (`MONGODB_URI`). 
+> 
+> All credentials and sensitive API keys are strictly loaded via `.env` environment variables and are **never** committed or hardcoded in the codebase.
+
+---
+
 ## ✨ Features
 
 - 🎬 **Movie Catalog & Search:** Explore a collection of movies or search titles with instant case-insensitive regex pattern matching.
-- 🤖 **Google Gemini AI Summaries:** Generate instant 200-word plot summaries, starring cast lists, and poster links powered by Gemini AI with loading animations and rotating status messages.
+- 🤖 **Google Gemini AI Integration:** Powered by your `GEMINI_API_KEY` to generate 200-word plot summaries, starring cast lists, and poster links with interactive loading spinners and status updates.
 - 🌟 **Interactive Star Ratings & Reviews:** Rate movies from 1 to 5 stars using interactive gold star pickers and view community reviews.
 - 🔥 **Trending Leaderboard Top 5:** Auto-calculates average ratings and ranks top 5 movies with gold, silver, and bronze leaderboard badges.
 - 🌙 **Persistent Dark / Light Theme:** Custom glassmorphic styling system with smooth theme toggling stored in `localStorage`.
@@ -25,7 +33,7 @@
 ## 🛠️ Tech Stack
 
 * **Backend:** Node.js, Express.js (v5), Mongoose (v9), Method-Override, Dotenv
-* **AI Integration:** `@google/genai` (Gemini Flash API)
+* **AI Engine:** `@google/genai` (Google Gemini Flash API Key)
 * **Frontend:** EJS (Embedded JavaScript), Vanilla CSS3 (Glassmorphism & Variables), Bootstrap 5.3, FontAwesome 6.5
 * **Database:** MongoDB (Local / MongoDB Atlas)
 
@@ -50,7 +58,7 @@ Lec16-Movies/
 │   ├── show.ejs           # Movie detail view & review form
 │   ├── summary.ejs        # Gemini AI summary view
 │   └── topMovies.ejs      # Trending top 5 leaderboard
-├── .env                   # Environment secrets (API keys & DB URL)
+├── .env                   # Environment secrets (Ignored by Git)
 ├── .gitignore             # Ignored files (node_modules, .env)
 ├── movies.js              # Express server entry point & routes
 ├── package.json           # Dependencies and start script
@@ -65,7 +73,8 @@ Lec16-Movies/
 ### 1. Prerequisites
 Ensure you have installed:
 * [Node.js](https://nodejs.org/) (v18 or higher)
-* [MongoDB](https://www.mongodb.com/) (Local instance or MongoDB Atlas account)
+* [MongoDB](https://www.mongodb.com/) (Local instance or MongoDB Atlas cluster)
+* A [Google Gemini API Key](https://aistudio.google.com/)
 
 ### 2. Installation
 Clone the repository and install dependencies:
@@ -77,12 +86,12 @@ npm install
 ```
 
 ### 3. Environment Configuration
-Create a `.env` file in the root directory:
+Create a `.env` file in the root directory (do not commit this file):
 
 ```env
 PORT=3000
-GEMINI_API_KEY=your_google_gemini_api_key_here
-MONGODB_URI=mongodb://127.0.0.1:27017/movies
+GEMINI_API_KEY=YOUR_GOOGLE_GEMINI_API_KEY_HERE
+MONGODB_URI=YOUR_MONGODB_CONNECTION_STRING_HERE
 ```
 
 ### 4. Running the Application
@@ -105,14 +114,14 @@ Open your browser and navigate to `http://localhost:3000`.
 
 ### Deploying to Render.com
 
-1. Push your project to a GitHub repository.
+1. Push your project to a GitHub repository (ensure `.env` is listed in `.gitignore`).
 2. Sign in to [Render.com](https://render.com) and create a **New Web Service**.
 3. Select your repository and configure:
    * **Build Command:** `npm install`
    * **Start Command:** `npm start`
-4. In the **Environment Variables** section, add:
-   * `GEMINI_API_KEY`: *(Your Google Gemini API Key)*
-   * `MONGODB_URI`: *(Your MongoDB Atlas Connection String)*
+4. Under **Environment Variables**, securely add your keys:
+   * `GEMINI_API_KEY`: `YOUR_GOOGLE_GEMINI_API_KEY`
+   * `MONGODB_URI`: `YOUR_MONGODB_ATLAS_CONNECTION_STRING`
 5. Click **Deploy Web Service** to launch your live site!
 
 ---
