@@ -1,0 +1,50 @@
+<%- include('./header.ejs') -%>
+
+<div class="row justify-content-center my-4">
+  <div class="col-lg-10">
+    <div class="glass-card p-4 p-md-5">
+      <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-secondary-subtle pb-3">
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge bg-danger px-3 py-2 rounded-pill font-semibold">
+            <i class="fa-solid fa-brain me-1"></i> Google Gemini AI
+          </span>
+          <h3 class="mb-0 fw-bold">AI Film Intelligence</h3>
+        </div>
+        <a href="/movie/<%= m._id %>" class="btn btn-outline-light btn-sm rounded-pill px-3">
+          <i class="fa-solid fa-arrow-left me-1"></i> Back to Movie
+        </a>
+      </div>
+
+      <div class="row g-4 align-items-center">
+        <!-- Poster -->
+        <div class="col-md-4 text-center">
+          <div class="movie-poster-wrapper rounded-3 shadow-lg overflow-hidden">
+            <img src="<%= data.poster || m.img %>" alt="<%= m.name %>" class="movie-poster-img" onerror="this.src='<%= m.img %>'">
+          </div>
+        </div>
+
+        <!-- AI Generated Content -->
+        <div class="col-md-8">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <h2 class="fw-bold mb-0"><%= data.title || m.name %></h2>
+            <span class="badge-year"><%= data.year || m.year %></span>
+          </div>
+
+          <h5 class="text-indigo mt-4 mb-2"><i class="fa-solid fa-align-left me-2"></i>Executive Summary</h5>
+          <p class="text-main" style="line-height: 1.7; font-size: 1.05rem;"><%= data.summary %></p>
+
+          <% if (data.cast && data.cast.length > 0) { %>
+            <h5 class="text-indigo mt-4 mb-3"><i class="fa-solid fa-users me-2"></i>Starring Cast</h5>
+            <div class="d-flex flex-wrap gap-2">
+              <% for(let actor of data.cast) { %>
+                <span class="cast-pill"><i class="fa-solid fa-user-ninja me-1 text-primary"></i> <%= actor %></span>
+              <% } %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('./footer.ejs') -%>

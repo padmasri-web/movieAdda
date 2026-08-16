@@ -1,0 +1,36 @@
+<%- include('./header.ejs') -%>
+
+<div class="glass-card form-card">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h3 class="mb-0 fw-bold"><i class="fa-solid fa-pen-to-square text-indigo me-2"></i>Edit Movie Details</h3>
+    <a href="/movie/<%= m._id %>" class="btn btn-outline-light btn-sm rounded-pill"><i class="fa-solid fa-xmark"></i> Cancel</a>
+  </div>
+
+  <form action="/edit/<%= m._id %>?_method=PUT" method="POST">
+    <div class="mb-3">
+      <label for="name" class="form-label-custom">Movie Title</label>
+      <input type="text" name="name" id="name" value="<%= m.name %>" class="form-control form-control-custom" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="year" class="form-label-custom">Release Year</label>
+      <input type="number" name="year" id="year" value="<%= m.year %>" class="form-control form-control-custom" min="1880" max="2100">
+    </div>
+
+    <div class="mb-3">
+      <label for="img" class="form-label-custom">Poster Image URL</label>
+      <input type="text" name="img" id="img" value="<%= m.img %>" class="form-control form-control-custom">
+    </div>
+
+    <div class="mb-4">
+      <label for="desc" class="form-label-custom">Movie Plot Description</label>
+      <textarea name="desc" id="desc" rows="4" class="form-control form-control-custom"><%= m.desc %></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-gradient-primary w-100 py-2">
+      <i class="fa-solid fa-floppy-disk me-2"></i>Update Movie
+    </button>
+  </form>
+</div>
+
+<%- include('./footer.ejs') -%>

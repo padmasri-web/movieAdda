@@ -1,0 +1,21 @@
+{
+  "name": "movies",
+  "version": "1.0.0",
+  "description": "movies",
+  "license": "ISC",
+  "author": "padmasri",
+  "type": "commonjs",
+  "main": "movies.js",
+  "scripts": {
+    "start": "node movies.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@google/genai": "^1.52.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^9.6.1"
+  }
+}

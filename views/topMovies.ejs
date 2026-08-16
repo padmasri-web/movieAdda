@@ -1,0 +1,52 @@
+<%- include('./header.ejs') -%>
+
+<!-- Header Banner -->
+<div class="glass-card p-4 p-md-5 mb-5 text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);">
+  <h1 class="display-5 fw-bold mb-2"><i class="fa-solid fa-fire text-warning me-2"></i>Trending Movies Leaderboard</h1>
+  <p class="text-muted max-w-xl mx-auto mb-0">Top 5 highest rated movies based on community reviews and ratings.</p>
+</div>
+
+<!-- Leaderboard Grid -->
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4 mb-5">
+  <% if (movies && movies.length > 0) { %>
+    <% movies.forEach((m, idx) => { %>
+      <div class="col">
+        <div class="glass-card movie-card position-relative">
+          <!-- Rank Badge -->
+          <div class="rank-badge" style="<%= idx === 0 ? 'background: linear-gradient(135deg, #f59e0b, #d97706);' : idx === 1 ? 'background: linear-gradient(135deg, #94a3b8, #64748b);' : idx === 2 ? 'background: linear-gradient(135deg, #b45309, #78350f);' : 'background: rgba(255,255,255,0.15);' %>">
+            #<%= idx + 1 %>
+          </div>
+
+          <div class="movie-poster-wrapper">
+            <img src="<%= m.img %>" class="movie-poster-img" alt="<%= m.name %>" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlya3kRleYghAMuX-ckvg_KJC21bq3yhSDUg&s'">
+          </div>
+
+          <div class="movie-card-body">
+            <h5 class="movie-title mb-2 text-truncate"><%= m.name %></h5>
+            
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="badge bg-warning text-dark font-semibold px-2 py-1 rounded-pill">
+                <i class="fa-solid fa-star me-1"></i><%= m.avgRating ? m.avgRating.toFixed(1) : 'N/A' %>
+              </span>
+              <small class="text-muted"><%= m.ratings ? m.ratings.length : 0 %> reviews</small>
+            </div>
+
+            <a href="/movie/<%= m._id %>" class="btn btn-gradient-primary btn-sm w-100 mt-auto">
+              View <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <div class="col-12 text-center py-5">
+      <div class="glass-card p-5 max-w-md mx-auto" style="max-width: 500px;">
+        <i class="fa-solid fa-trophy fa-3x text-muted mb-3"></i>
+        <h3>No trending movies yet</h3>
+        <p class="text-muted">Rate movies to generate the top 5 leaderboard!</p>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<%- include('./footer.ejs') -%>

@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-custom navbar-dark">
+  <div class="container">
+    <a class="navbar-brand navbar-brand-logo" href="/">
+      <i class="fa-solid fa-clapperboard me-1"></i> movieAdda
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-1">
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/"><i class="fa-solid fa-house me-1"></i> Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/new"><i class="fa-solid fa-plus me-1"></i> Add Movie</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/trending"><i class="fa-solid fa-fire text-warning me-1"></i> Trending</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        <form action="/" method="GET" class="d-flex" role="search">
+          <div class="input-group">
+            <input class="form-control search-input-custom" type="search" name="q" placeholder="Search movies..." aria-label="Search">
+            <button class="btn btn-gradient-primary rounded-pill px-3 ms-2" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </form>
+        <button class="btn-theme-toggle" id="themeBtn">
+          <i class="fa-solid fa-moon"></i> <span>Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

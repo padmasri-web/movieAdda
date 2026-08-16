@@ -1,0 +1,148 @@
+<%- include('./header.ejs') -%>
+
+<div class="row g-4 mb-5">
+  <!-- Left Side: Movie Card Details -->
+  <div class="col-lg-4">
+    <div class="glass-card p-4 text-center sticky-top" style="top: 100px; z-index: 5;">
+      <div class="movie-poster-wrapper rounded-3 mb-4 overflow-hidden shadow-lg">
+        <img src="<%= m.img %>" alt="<%= m.name %>" class="movie-poster-img" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlya3kRleYghAMuX-ckvg_KJC21bq3yhSDUg&s'">
+      </div>
+      
+      <h2 class="fw-bold mb-2"><%= m.name %></h2>
+      <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+        <span class="badge-year"><i class="fa-regular fa-calendar me-1"></i><%= m.year %></span>
+        <% 
+          let avg = m.ratings && m.ratings.length > 0 
+            ? (m.ratings.reduce((acc, cur) => acc + cur.rating, 0) / m.ratings.length).toFixed(1) 
+            : 0;
+        %>
+        <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold">
+          <i class="fa-solid fa-star me-1"></i><%= avg > 0 ? avg : 'No Rating' %>
+        </span>
+      </div>
+
+      <p class="text-muted text-start mb-4" style="line-height: 1.6;"><%= m.desc || 'No description provided.' %></p>
+
+      <div class="d-grid gap-2">
+        <a href="/summary/<%= m._id %>" id="aiSummaryBtn" class="btn btn-gradient-ai">
+          <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate AI Summary
+        </a>
+        <a href="/edit/<%= m._id %>" class="btn btn-outline-light rounded-pill">
+          <i class="fa-solid fa-pen-to-square me-2"></i>Edit Movie Info
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Add Rating & Existing Ratings List -->
+  <div class="col-lg-8">
+    <!-- Add Review Form Card -->
+    <div class="glass-card p-4 mb-4">
+      <h4 class="mb-3 d-flex align-items-center gap-2">
+        <i class="fa-solid fa-star text-warning"></i> Leave a Review
+      </h4>
+      <form action="/rating/<%= m._id %>" method="POST">
+        <div class="mb-3">
+          <label class="form-label-custom d-block mb-1">Select Rating</label>
+          <div class="star-rating-select">
+            <input type="radio" id="rate5" name="rating" value="5" required />
+            <label for="rate5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="rate4" name="rating" value="4" />
+            <label for="rate4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="rate3" name="rating" value="3" />
+            <label for="rate3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="rate2" name="rating" value="2" />
+            <label for="rate2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" id="rate1" name="rating" value="1" />
+            <label for="rate1" title="1 star"><i class="fa-solid fa-star"></i></label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="comment" class="form-label-custom">Review Comment</label>
+          <textarea name="comment" id="comment" rows="3" class="form-control form-control-custom" placeholder="Write your thoughts about this movie..." required></textarea>
+        </div>
+
+        <button class="btn btn-gradient-primary px-4" type="submit">
+          <i class="fa-solid fa-paper-plane me-2"></i>Submit Review
+        </button>
+      </form>
+    </div>
+
+    <!-- Existing Reviews Section -->
+    <div class="glass-card p-4">
+      <h4 class="mb-4 d-flex align-items-center justify-content-between">
+        <span><i class="fa-solid fa-comments me-2"></i>User Reviews</span>
+        <span class="badge bg-secondary rounded-pill fs-6"><%= m.ratings ? m.ratings.length : 0 %></span>
+      </h4>
+
+      <% if (m.ratings && m.ratings.length > 0) { %>
+        <% for(let r of m.ratings) { %>
+          <div class="review-card mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="text-warning fs-6">
+                <% for(let i = 1; i <= 5; i++) { %>
+                  <i class="fa-<%= i <= r.rating ? 'solid' : 'regular' %> fa-star"></i>
+                <% } %>
+                <span class="text-muted ms-2 fs-6">(<%= r.rating %>/5)</span>
+              </div>
+              <small class="text-muted"><i class="fa-regular fa-clock me-1"></i>Verified Viewer</small>
+            </div>
+            <p class="mb-0 text-main" style="font-size: 0.95rem; line-height: 1.5;"><%= r.comment %></p>
+          </div>
+        <% } %>
+      <% } else { %>
+        <div class="text-center py-4 text-muted">
+          <i class="fa-regular fa-comment-dots fa-2x mb-2"></i>
+          <p class="mb-0">No reviews yet. Be the first to share your thoughts!</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<!-- AI Generation Loading Modal Overlay -->
+<div id="aiLoadingOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none justify-content-center align-items-center" style="background: rgba(11, 15, 25, 0.88); backdrop-filter: blur(14px); z-index: 9999;">
+  <div class="glass-card p-5 text-center shadow-lg" style="max-width: 460px; border: 1px solid rgba(236, 72, 153, 0.35);">
+    <div class="mb-4 position-relative d-inline-block">
+      <div class="spinner-border" style="width: 4rem; height: 4rem; color: #ec4899;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <i class="fa-solid fa-wand-magic-sparkles position-absolute top-50 start-50 translate-middle text-purple fs-4" style="color: #8b5cf6;"></i>
+    </div>
+    
+    <h4 class="fw-bold mb-2 text-main">Google Gemini AI at Work</h4>
+    <p id="aiLoadingMsg" class="text-muted small mb-0" style="min-height: 44px; line-height: 1.5;">
+      🤖 Synthesizing neural film data... Please hold tight while our AI processes plot intelligence.
+    </p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const aiBtn = document.querySelector("#aiSummaryBtn");
+    const overlay = document.querySelector("#aiLoadingOverlay");
+    const msgEl = document.querySelector("#aiLoadingMsg");
+
+    const messages = [
+      "🤖 Synthesizing neural film patterns... Hold tight while Gemini AI analyzes the plot.",
+      "✨ Querying Google Gemini AI models for cast & storyline intelligence...",
+      "🎬 Extracting character dynamics, theme metrics, and key highlights...",
+      "⚡ Almost ready! Assembling your instant AI movie summary..."
+    ];
+
+    if (aiBtn && overlay) {
+      aiBtn.addEventListener("click", () => {
+        overlay.classList.remove("d-none");
+        overlay.classList.add("d-flex");
+        let idx = 0;
+        setInterval(() => {
+          idx = (idx + 1) % messages.length;
+          if (msgEl) msgEl.textContent = messages[idx];
+        }, 1500);
+      });
+    }
+  });
+</script>
+
+<%- include('./footer.ejs') -%>
